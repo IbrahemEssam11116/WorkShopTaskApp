@@ -1,0 +1,86 @@
+﻿@model WorkshopTaskApp.Bussniss.DTOS.ProductDTO;
+@{
+    ViewData["Title"] = "Index";
+    var categories = ViewBag.Categories;
+}
+
+
+<div>
+    <div><h3>Products</h3></div>
+
+    <div>
+        <form asp-action="Index" asp-controller="Product" method="post">
+
+            <div class="row">
+                <select class="form-select" asp-for="CategoryId" asp-items="@categories" id="selectedCategory">
+                    <option value="@DBNull.Value">All</option>
+                </select>
+            </div>
+
+
+            @foreach (var product in Model.Products)
+            {
+                <div class="card row my-2">
+                    <div class="card-body">
+                        <div class="row justify-content-between">
+                            <h5 class="card-title">@product.Name</h5>
+                            <span>@product.Price  EGP</span>
+                        </div>
+                        <p class="text-danger">
+                            @if (product.Quantity == 0)
+                            {
+                                <span>Out of Stock</span>
+                            }
+                        </p>
+                        @if (product.Discount > 0)
+                        {
+                            <span class="text-primary">Discount @product.Discount % If Buy More Than 2 Item</span>
+                        }
+                        <p class="card-text text-secondary">@product.Description</p>
+                        <a asp-action="Order" asp-controller="Order" asp-route-productId="@product.Id" class="card-link btn btn-primary">Buy</a>
+                        @if (User.IsInRole("Admin"))
+                        {
+                            <a asp-action="Edit" asp-controller="Product" asp-route-Id="@product.Id" class="card-link btn btn-primary">Edit</a>
+                        }
+                    </div>
+                </div>
+            }
+
+            <table class="table table-responsive">
+                <tr>
+                    @for (int i = 1; i <= Model.PageCount; i++)
+                    {
+                        <td>
+                            @if (i != Model.CurrentPageIndex)
+                            {
+                                <a class="PageIndex btn btn-outline-primary" href="javascript:FetchData(@i);">@i</a>
+                            }
+                            else
+                            {
+                                <span style="color:greenyellow;" class="btn btn-info">@i</span>
+                            }
+                        </td>
+                    }
+                </tr>
+            </table>
+            <input type="hidden" id="CurrentPageIndex" name="pageIndex" />
+        </form>
+    </div>
+
+</div>
+
+
+
+@section Scripts {
+    <script>
+        $("#selectedCategory").change(function () {
+            document.getElementById("CurrentPageIndex").value = 1;
+            document.forms[0].submit();
+        })
+        function FetchData(index) {
+            console.log(index);
+            document.getElementById("CurrentPageIndex").value = index;
+            document.forms[0].submit();
+        }
+    </script>
+}
