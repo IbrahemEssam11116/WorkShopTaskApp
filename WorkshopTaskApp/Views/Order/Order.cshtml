@@ -98,15 +98,16 @@
             let discount = $("#productDiscount").val();
             let price = $("#productPrice").val();
             let pruductQuantity = $("#ProductQuantity").val();
-            console.log(price)
-            if (pruductQuantity < quantityOrdered) {
+            console.log(pruductQuantity)
+            console.log(quantityOrdered)
+            if (Number(pruductQuantity) <Number(quantityOrdered) ) {
                 $("#error").removeClass("d-none")
                 $("#quantityValue").val(quantityOrdered - 1);
             }
             else {
                 $("#error").addClass("d-none")
 
-                if ((discount != null || discount != 0) && quantityOrdered >= 2) {
+                if ((discount != null || discount != 0) && Number(quantityOrdered) >= 2) {
 
                     var tPrice = price * quantityOrdered;
                     totalPrice = tPrice - tPrice * discount / 100;
