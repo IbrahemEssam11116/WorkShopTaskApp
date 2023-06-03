@@ -21,7 +21,6 @@
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\Repository.Entity\WorkshopTaskApp.Entity.csproj" />
     <ProjectReference Include="..\WorkshopTaskApp.Entity\WorkshopTaskApp.Entity.csproj" />
   </ItemGroup>
 
